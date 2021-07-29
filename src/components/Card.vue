@@ -1,52 +1,122 @@
 <template>
   <div>
-    <!-- <div class="card">
-      <div class="card-inner red">
-        <span class="mark">
-          {{ cardNumber }}
-        </span>
-      </div>
-    </div> -->
-
     <div class="card">
-      <div class="card-inner red">
-        <span class="accent accent-top">
-          {{ cardNumber }}
+      <div 
+        :class="[color]"
+        class="card-inner">
+        <span 
+          :class="[value]"
+          class="accent accent-top">
+          <span v-if="value === 'reverse' || value === 'skip' || value === 'wild+4' || value === '+2' || isNumberType(value) || isPlusTwoType(value)">
+            <span v-html="displayValue" />
+          </span>
         </span>
-        <span class="mark">
-          {{ cardNumber }}
-        </span>
-        <span class="accent accent-bottom">
-          {{ cardNumber }}
+        <div
+          class="mark">
+          <div v-if="isSpecialCard(value)" >
+            <div 
+              v-if="value === '+2'"
+              class="plus-two-mark" >
+              &nbsp;
+              <div class="card-one" />
+              <div class="card-two" />
+            </div>
+          </div>
+          <div 
+            v-if="value === 'skip' || value === 'reverse'"
+            :class="[value]" >
+            <span v-html="displayValue" />
+          </div>
+        </div>
+        <span
+          :class="[value]" 
+          class="accent accent-bottom">
+          <span v-if="value === 'reverse' || value === 'skip' || value === 'wild+4' || value === '+2' || isNumberType(value) || isPlusTwoType(value)">
+            <span v-html="displayValue" />
+          </span>
         </span>
       </div>
     </div>
-
-    <!-- <div class="card">
-      <div class="card-inner yellow">
-        <span class="mark">
-          {{ cardNumber }}
-        </span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-inner blue">
-        <span class="mark">
-          {{ cardNumber }}
-        </span>
-      </div>
-    </div> -->
   </div>
 </template> 
 
 <script>
 export default {
-  data() {
-    return {
-      cardNumber: 7, // TODO: This will be a prop
-    };
+  props: {
+    value: {
+      type: String,
+      required: true,
+      validator(value) {
+        return [
+          '0',
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          '+2', 
+          'skip',
+          'reverse', 
+          'wild', 
+          'wild+4'].includes(value);
+      },
+    },
+    color: {
+      type: String,
+      required: false,
+      default: 'black',
+      validator(value) {
+        return ['black', 'red', 'yellow', 'green', 'blue'].includes(value);
+      },
+    },
   },
+  computed: {
+    displayValue() {
+      let value = '';
+      if (this.value === 'skip') {
+        value = '&#8856;';
+      } else if (this.value === 'reverse') {
+        value = '&#8644;';
+      } else {
+        value = this.value;
+      }
+      return value;
+    },
+  },
+  methods: {
+    isNumberType(value) {
+      return [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+      ].includes(value);
+    },
+
+    isPlusTwoType(value) {
+      return value === '+2';
+    },
+
+    isSpecialCard(value) {
+      return [
+        '+2',
+        'reverse',
+        'skip',
+        'wild',
+        'wild+4',
+      ].includes(value);
+    }
+},
 };
 </script>
 
@@ -70,7 +140,7 @@ export default {
 }
 
 .card {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   margin: 2rem;
   display: flex;
   align-items: stretch;
@@ -79,7 +149,9 @@ export default {
   border-radius: 0.5rem;
   box-shadow: 0 0 10px #aaaaaa;
   color: white;
-  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000, 0 1px 0 #000000, 4px 4px 0 #000000;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
+    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
+    0 1px 0 #000000, 4px 4px 0 #000000;
 }
 
 .card .card-inner {
@@ -96,18 +168,24 @@ export default {
 
 .card .card-inner .accent {
   position: absolute;
-  font-size: 1.25rem;
-  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000, 0 1px 0 #000000, 2px 2px 0 #000000;
+  font-size: 1.5rem;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
+    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
+    0 1px 0 #000000, 2px 2px 0 #000000;
+}
+
+.card .card-inner .reverse {
+  transform: rotate(-50deg);
 }
 
 .card .card-inner .accent.accent-top {
   top: 0;
-  left: 0.5rem;
+  left: 0.25rem;
 }
 
 .card .card-inner .accent.accent-bottom {
   bottom: 0;
-  right: 0.5rem;
+  right: 0.25rem;
 }
 
 .card .card-inner .mark {
@@ -116,7 +194,7 @@ export default {
   justify-content: center;
   background-color: transparent;
   border-radius: 120px 60px / 120px 60px;
-  border: .25rem solid white;
+  border: 0.25rem solid white;
   height: 75%;
   width: 100%;
   font-size: 4.5rem;
@@ -124,16 +202,28 @@ export default {
   margin-right: -0.25rem;
 }
 
-/* .card .card-inner .mark {
-   display: inline-block;
-   vertical-align: middle;
-   background-color: white;
-   line-height: 1.4;
-   margin: auto;
-   font-size: 100px;
-   vertical-align: middle;
-   border-radius: 100px 60px / 120px 60px;
-   width: 100%;
-   height: 50%;
- } */
+.card .card-inner .mark .plus-two-mark {
+  position: relative;
+}
+
+.card .card-inner .mark .plus-two-mark div {
+  width: 1.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem 0.25rem 0.5rem 0.25rem;
+  border: solid black;
+  border-width: 5px 5px 3px 3px;
+  background-color: white;
+  display: inline-block;
+  position: absolute;
+}
+
+.card .card-inner .mark .plus-two-mark .card-one {
+  top: 35%;
+  right: 25%;
+}
+
+.card .card-inner .mark .plus-two-mark .card-two {
+  top: 20%;
+  left: 0;
+}
 </style>

@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <card />
+    <card value="1" color="yellow" />
+    <card value="+2" color="green" />
+    <card value="skip" color="green" />
+    <card value="reverse" color="green" />
+    <card value="wild+4" />
+    <card value="wild" />
   </div>
 </template>
 
@@ -23,5 +28,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+::selection {
+    color: none;
+    background: none;
 }
 </style>
