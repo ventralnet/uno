@@ -175,6 +175,7 @@ export default {
   border-radius: 0.5rem;
   margin: 0.25rem;
   overflow: hidden;
+  cursor: default;
 }
 
 .card .card-inner .accent {
