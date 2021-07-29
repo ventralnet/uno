@@ -13,17 +13,15 @@
         </span>
         <div
           class="mark">
-          <div v-if="isSpecialCard(value)" >
-            <div 
-              v-if="value === '+2'"
-              class="plus-two-mark" >
-              &nbsp;
-              <div class="card-one" />
-              <div class="card-two" />
-            </div>
+          <div 
+            v-if="value === '+2'"
+            class="plus-two-mark" >
+            &nbsp;
+            <div class="card-one" />
+            <div class="card-two" />
           </div>
           <div 
-            v-if="value === 'skip' || value === 'reverse'"
+            v-else
             :class="[value]" >
             <span v-html="displayValue" />
           </div>
@@ -75,12 +73,22 @@ export default {
     },
   },
   computed: {
+    displayColor() {
+      if (this.value.startsWith('wild')) {
+        return 'black';
+      } else {
+        return this.color;
+      }
+    },
+
     displayValue() {
       let value = '';
       if (this.value === 'skip') {
         value = '&#8856;';
       } else if (this.value === 'reverse') {
         value = '&#8644;';
+      } else if (this.value === 'wild+4') {
+        value = '+4';
       } else {
         value = this.value;
       }
@@ -123,6 +131,10 @@ export default {
 <style scoped>
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:900);
 
+.card .card-inner.black {
+  background-color: #000;
+}
+
 .card .card-inner.blue {
   background-color: #0063b3;
 }
@@ -163,7 +175,6 @@ export default {
   border-radius: 0.5rem;
   margin: 0.25rem;
   overflow: hidden;
-  background-color: #006787;
 }
 
 .card .card-inner .accent {
@@ -186,6 +197,10 @@ export default {
 .card .card-inner .accent.accent-bottom {
   bottom: 0;
   right: 0.25rem;
+}
+
+.card .card-inner.black .mark {
+  background-color: #fff;
 }
 
 .card .card-inner .mark {
