@@ -22,7 +22,7 @@
           </div>
           <div 
             v-else
-            :class="[value]" >
+            :class="[value, { 'reverse-mark': value === 'reverse' }]" >
             <span v-html="displayValue" />
           </div>
         </div>
@@ -184,6 +184,10 @@ export default {
   text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
     1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
     0 1px 0 #000000, 2px 2px 0 #000000;
+}
+
+.card .card-inner .reverse.reverse-mark {
+  margin-left: -0.5rem; /* Was looking a little funky on my phone */
 }
 
 .card .card-inner .reverse {
