@@ -9,7 +9,7 @@
     </div> -->
 
     <div class="card">
-      <div class="card-inner green">
+      <div class="card-inner red">
         <span class="accent accent-top">
           {{ cardNumber }}
         </span>
