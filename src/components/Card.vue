@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div 
-        :class="[color]"
+        :class="[cardColor, { 'is-flipped': isFlipped }]"
         class="card-inner">
       <div 
         :class="{ 'reverse-mark': this.value === 'reverse' }" 
@@ -12,7 +12,7 @@
       </div>
       
       <div 
-      style="line-height: 1.5"
+        style="line-height: 1.5"
         class="mark">
         <div
           :class="{ 'reverse-mark': this.value === 'reverse' }" >
@@ -32,6 +32,10 @@
 <script>
 export default {
   props: {
+    isFlipped: {
+      type: Boolean,
+      default: false,
+    }, 
     value: {
       type: String,
       required: true,
@@ -65,7 +69,9 @@ export default {
   },
   computed: {
     markDisplay() {
-      if (this.value === 'wild' || this.value === 'wild+4') {
+      if (this.isFlipped) {
+        return '<div class="card-back-logo">One</div>';
+      } else if (this.value === 'wild' || this.value === 'wild+4') {
         return `
         <div style="position: relative;">
           &nbsp;
@@ -82,40 +88,26 @@ export default {
 
     cornerDisplay() {
       let value = '';
-      if (this.value === 'skip') {
+      if (this.isFlipped || this.value === 'wild') {
+        value = '';
+      } else if (this.value === 'skip') {
         value = '&#8856;';
       } else if (this.value === 'reverse') {
         value = '&#8644;';
       } else if (this.value === 'wild+4') {
         value = '+4';
-      } else if (this.value === 'wild') {
-        value = '';
       } else {
         value = this.value;
       }
       return value;
     },
 
-    displayColor() {
-      if (this.value.startsWith('wild')) {
+    cardColor() {
+      if (this.value.startsWith('wild') || this.isFlipped) {
         return 'black';
       } else {
         return this.color;
       }
-    },
-
-    displayValue() {
-      let value = '';
-      if (this.value === 'skip') {
-        value = '&#8856;';
-      } else if (this.value === 'reverse') {
-        value = '&#8644;';
-      } else if (this.value === 'wild+4') {
-        value = '+4';
-      } else {
-        value = this.value;
-      }
-      return value;
     },
   },
   methods: {
@@ -177,9 +169,19 @@ export default {
   bottom: 0;
   right: 0;
 }
+
+.card .card-inner.is-flipped .mark .card-back-logo {
+  color: yellow;
+  font-size: 3rem;
+  margin-top: 15px;
+  transform: rotate(-48deg);
+  text-shadow: 3px 3px 0 #000000, -3px -3px 0 #000000, -3px 3px 0 #000000,
+  3px -3px 0 #000000, 3px 0 0 #000000, -3px 0 0 #000000, 0 -3px 0 #000000,
+  0 3px 0 #000000, 2px 2px 0 #000000;
+}
 </style>
 
-<style scoped>
+<style>
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:900);
 
 .card {
@@ -236,9 +238,6 @@ export default {
 }
 
 .card .card-inner .mark {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
   background-color: transparent;
   border-radius: 120px 60px / 120px 60px;
   border: 0.25rem solid white;
@@ -251,6 +250,14 @@ export default {
   text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
   1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
   0 1px 0 #000000, 2px 2px 0 #000000;
+}
+
+/* .card .card-inner .mark .card-back-logo {
+} */
+
+.card .card-inner.is-flipped .mark {
+  border-color: #c72a18 !important;
+  background-color: #c72a18 !important;
 }
 
 .card .card-inner.black .mark {
@@ -281,141 +288,3 @@ export default {
     background-color: #18a849;
   }
 </style>
-
-<style scoped>
-/* @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:900);
-
-.card .card-inner.black {
-  background-color: #000;
-}
-
-.card .card-inner.blue {
-  background-color: #0063b3;
-}
-
-.card .card-inner.yellow {
-  background-color: #e6ca1e;
-}
-
-.card .card-inner.red {
-  background-color: #c72a18;
-}
-
-.card .card-inner.green {
-  background-color: #18a849;
-}
-
-.card {
-  font-family: "Source Sans Pro", sans-serif;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px #aaaaaa;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 10rem;
-  width: 7rem;
-}
-
-.card-inner {
-  width: 100%;
-  height: 100%;
-}
-
-.card {
-  font-family: "Source Sans Pro", sans-serif;
-  margin: 2rem;
-  display: flex;
-  align-items: stretch;
-  height: 10rem;
-  width: 7rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px #aaaaaa;
-  color: white;
-  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
-    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
-    0 1px 0 #000000, 4px 4px 0 #000000;
-}
-
-.card .card-inner {
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  flex: auto;
-  border-radius: 0.5rem;
-  margin: 0.25rem;
-  overflow: hidden;
-  cursor: default;
-}
-
-.card .card-inner .accent {
-  position: absolute;
-  font-size: 1.5rem;
-  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
-    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
-    0 1px 0 #000000, 2px 2px 0 #000000;
-}
-
-.card .card-inner .reverse.reverse-mark {
-  margin-left: -0.5rem; 
-}
-
-.card .card-inner .reverse {
-  transform: rotate(-50deg);
-}
-
-.card .card-inner .accent.accent-top {
-  top: 0;
-  left: 0.25rem;
-}
-
-.card .card-inner .accent.accent-bottom {
-  bottom: 0;
-  right: 0.25rem;
-}
-
-.card .card-inner.black .mark {
-  background-color: #fff;
-}
-
-.card .card-inner .mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border-radius: 120px 60px / 120px 60px;
-  border: 0.25rem solid white;
-  height: 75%;
-  width: 100%;
-  font-size: 4.5rem;
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-}
-
-.card .card-inner .mark .plus-two-mark {
-  position: relative;
-}
-
-.card .card-inner .mark .plus-two-mark div {
-  width: 1.5rem;
-  height: 2.5rem;
-  border-radius: 0.5rem 0.25rem 0.5rem 0.25rem;
-  border: solid black;
-  border-width: 5px 5px 3px 3px;
-  background-color: white;
-  display: inline-block;
-  position: absolute;
-}
-
-.card .card-inner .mark .plus-two-mark .card-one {
-  top: 35%;
-  right: 25%;
-}
-
-.card .card-inner .mark .plus-two-mark .card-two {
-  top: 20%;
-  left: 0;
-}
-*/
-</style> 

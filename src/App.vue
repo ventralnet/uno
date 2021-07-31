@@ -2,7 +2,7 @@
   <div id="app">
     <card value="1" color="yellow" />
     <!-- <card value="+2" color="green" /> -->
-    <card value="skip" color="green" />
+    <card value="skip" color="green" :is-flipped="true" />
     <card value="reverse" color="green" />
     <card value="wild+4" />
     <card value="wild" /> 
