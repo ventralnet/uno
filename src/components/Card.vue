@@ -227,8 +227,8 @@ export default {
     0 1px 0 #000000, 2px 2px 0 #000000;
 }
 
-.card .card-inner .accent.reverse-mark,
-.card .card-inner .mark .reverse-mark {
+.card .card-inner:not.is-flipped .accent.reverse-mark,
+.card .card-inner:not.is-flipped .mark .reverse-mark {
   transform: rotate(-50deg);
   vertical-align: top;
 }
