@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <div class="card-deck">
+      <button @click="flipCards">Flip Cards!</button>
       <div 
         v-for="(card, index) in deck"
         :key="`card-${index}`"
         style="display: inline-block">
-        <card :value="card.value" :color="card.color" />
+        <card :value="card.value" :color="card.color" :is-flipped="card.isFlipped" />
       </div>
     </div> 
   </div>
@@ -26,28 +27,34 @@ export default {
   mounted() {
     this.deck = ['red', 'green', 'yellow', 'blue'].reduce((deck, color) => {
       for (let value = 0; value <= 9; value++) {
-        deck.push(new Card({ color, value: `${value}` }));
+        deck.push(new Card({ color, value: `${value}`, isFlipped: false }));
         if (value > 0) {
-          deck.push(new Card({ color, value: `${value}` })); // Two of each except for zero
+          deck.push(new Card({ color, value: `${value}`, isFlipped: false })); // Two of each except for zero
         }
       }
-      deck.push(new Card({ color, value: 'skip' }));
-      deck.push(new Card({ color, value: 'skip' }));
-      deck.push(new Card({ color, value: 'reverse' }));
-      deck.push(new Card({ color, value: 'reverse' }));
-      deck.push(new Card({ color, value: '+2' }));
-      deck.push(new Card({ color, value: '+2' }));
+      deck.push(new Card({ color, value: 'skip', isFlipped: false }));
+      deck.push(new Card({ color, value: 'skip', isFlipped: false }));
+      deck.push(new Card({ color, value: 'reverse', isFlipped: false }));
+      deck.push(new Card({ color, value: 'reverse', isFlipped: false }));
+      deck.push(new Card({ color, value: '+2', isFlipped: false }));
+      deck.push(new Card({ color, value: '+2', isFlipped: false }));
       return deck;
     }, []);
     
-    this.deck.push(new Card({ value: 'wild' }));
-    this.deck.push(new Card({ value: 'wild' }));
-    this.deck.push(new Card({ value: 'wild' }));
-    this.deck.push(new Card({ value: 'wild' }));
-    this.deck.push(new Card({ value: 'wild+4' }));
-    this.deck.push(new Card({ value: 'wild+4' }));
-    this.deck.push(new Card({ value: 'wild+4' }));
-    this.deck.push(new Card({ value: 'wild+4' }));
+    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
+    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
+  },
+
+  methods: {
+    flipCards() {
+      this.deck.forEach(card => card.flipCard());
+    },
   },
 };
 </script>
