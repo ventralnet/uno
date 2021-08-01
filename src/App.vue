@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <div class="card-deck">
-      <button @click="flipCards">Flip Cards!</button>
+    <div
+      style="width: 75%; text-align: center" 
+      class="card-deck">
+      <button 
+        @click="flipCards">Flip Cards!</button>
+      <br />
       <div 
         v-for="(card, index) in deck"
         :key="`card-${index}`"
-        style="display: inline-block">
+        style="display: inline-block; margin-right: 1rem;">
         <card :value="card.value" :color="card.color" :is-flipped="card.isFlipped" />
       </div>
     </div> 
@@ -67,10 +71,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-.card-deck {
-  width: 40rem;
 }
 
 ::selection {
