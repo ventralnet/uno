@@ -1,23 +1,53 @@
 <template>
   <div id="app">
-    <card value="1" color="yellow" />
-    <card value="6" color="red" />
-    <card value="+2" color="green" />
-    <card value="skip" color="blue" :is-flipped="false" />
-    <card value="skip" color="green" :is-flipped="true" />
-    <card value="reverse" color="green" />
-    <card value="wild+4" />
-    <card value="wild" /> 
+    <div class="card-deck">
+      <div 
+        v-for="(card, index) in deck"
+        :key="`card-${index}`"
+        style="display: inline-block">
+        <card :value="card.value" :color="card.color" />
+      </div>
+    </div> 
   </div>
 </template>
 
 <script>
-import Card from "./components/Card.vue";
+import Card from './components/Card.js'
+import CardComponent from "./components/Card.vue";
 
 export default {
   name: "App",
   components: {
-    Card,
+    'Card': CardComponent,
+  },
+  data() {
+    return { deck: [] };
+  },
+  mounted() {
+    this.deck = ['red', 'green', 'yellow', 'blue'].reduce((deck, color) => {
+      for (let value = 0; value <= 9; value++) {
+        deck.push(new Card({ color, value: `${value}` }));
+        if (value > 0) {
+          deck.push(new Card({ color, value: `${value}` })); // Two of each except for zero
+        }
+      }
+      deck.push(new Card({ color, value: 'skip' }));
+      deck.push(new Card({ color, value: 'skip' }));
+      deck.push(new Card({ color, value: 'reverse' }));
+      deck.push(new Card({ color, value: 'reverse' }));
+      deck.push(new Card({ color, value: '+2' }));
+      deck.push(new Card({ color, value: '+2' }));
+      return deck;
+    }, []);
+    
+    this.deck.push(new Card({ value: 'wild' }));
+    this.deck.push(new Card({ value: 'wild' }));
+    this.deck.push(new Card({ value: 'wild' }));
+    this.deck.push(new Card({ value: 'wild' }));
+    this.deck.push(new Card({ value: 'wild+4' }));
+    this.deck.push(new Card({ value: 'wild+4' }));
+    this.deck.push(new Card({ value: 'wild+4' }));
+    this.deck.push(new Card({ value: 'wild+4' }));
   },
 };
 </script>
@@ -30,6 +60,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.card-deck {
+  width: 40rem;
 }
 
 ::selection {

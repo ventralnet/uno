@@ -30,6 +30,8 @@
 </template> 
 
 <script>
+import Card from '/src/components/Card.js';
+
 export default {
   props: {
     isFlipped: {
@@ -66,6 +68,11 @@ export default {
         return ['black', 'red', 'yellow', 'green', 'blue'].includes(value);
       },
     },
+  },
+  data() {
+    return {
+      card: null,
+    };
   },
   computed: {
     markDisplay() {
@@ -109,6 +116,9 @@ export default {
         return this.color;
       }
     },
+  },
+  mounted() {
+    this.card = new Card({ value: this.value, color: this.color, isFlipped: this.isFlipped });
   },
   methods: {
     isNumberType(value) {
