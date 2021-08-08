@@ -89,7 +89,7 @@ export default {
         </div>
         `;
       } else {
-        return `${this.cornerDisplay}`;
+        return `<div style="${this.value === '9' || this.value === '6' ? 'text-decoration: underline;' : ''}">${this.cornerDisplay}</div>`;
       }
     },
 

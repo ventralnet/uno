@@ -7,7 +7,7 @@
         @click="flipCards">Flip Cards!</button>
       <br />
       <div 
-        v-for="(card, index) in deck"
+        v-for="(card, index) in shoe.shoe"
         :key="`card-${index}`"
         style="display: inline-block; margin-right: 1rem;">
         <card :value="card.value" :color="card.color" :is-flipped="card.isFlipped" />
@@ -17,8 +17,9 @@
 </template>
 
 <script>
-import Card from './components/Card.js'
 import CardComponent from "./components/Card.vue";
+
+import Shoe from './components/Shoe.js';
 
 export default {
   name: "App",
@@ -26,38 +27,16 @@ export default {
     'Card': CardComponent,
   },
   data() {
-    return { deck: [] };
+    return { shoe: [] };
   },
   mounted() {
-    this.deck = ['red', 'green', 'yellow', 'blue'].reduce((deck, color) => {
-      for (let value = 0; value <= 9; value++) {
-        deck.push(new Card({ color, value: `${value}`, isFlipped: false }));
-        if (value > 0) {
-          deck.push(new Card({ color, value: `${value}`, isFlipped: false })); // Two of each except for zero
-        }
-      }
-      deck.push(new Card({ color, value: 'skip', isFlipped: false }));
-      deck.push(new Card({ color, value: 'skip', isFlipped: false }));
-      deck.push(new Card({ color, value: 'reverse', isFlipped: false }));
-      deck.push(new Card({ color, value: 'reverse', isFlipped: false }));
-      deck.push(new Card({ color, value: '+2', isFlipped: false }));
-      deck.push(new Card({ color, value: '+2', isFlipped: false }));
-      return deck;
-    }, []);
-    
-    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
-    this.deck.push(new Card({ value: 'wild+4', isFlipped: false }));
+    this.shoe = new Shoe(2);
+    this.shoe.shuffle();
   },
 
   methods: {
     flipCards() {
-      this.deck.forEach(card => card.flipCard());
+      this.shoe.shoe.forEach(card => card.flipCard());
     },
   },
 };
